@@ -1,0 +1,15 @@
+# .bash_exports
+
+export PATH=$PATH:/home/lordnaver/.local/bin
+
+# default editor
+export EDITOR=vim
+export VISUAL=vim
+
+# bash exports
+export HISTFILE=~/.bash/history
+
+# ssh/gpg settings
+export VIMINIT='source ~/.vim/vimrc'
+export TMUX_CONF=~/.config/tmux/tmux.conf
+export GPG_TTY=$(tty)

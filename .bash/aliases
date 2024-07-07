@@ -1,0 +1,34 @@
+#vim aliases
+alias bashrc='nvim ~/.bashrc'
+alias .bash='cd ~/.bash && ls -A'
+alias aliases='nvim ~/.bash/aliases'
+alias exports='nvim ~/.bash/exports'
+
+alias config='nvim ~/.config'
+alias vimrc='vim ~/.vim/vimrc'
+alias inlua='nvim ~/.config/nvim/init.lua'
+alias gitconfig='nvim ~/.gitconfig'
+
+alias action='nvim ~/action'
+
+#directory aliases
+alias code='cd /mnt/c/Users/revan/code'
+alias water='cd ~/c_projects/project_water && ls'
+alias py='cd ~/python_projects/project_py && ls'
+alias dotfiles='cd ~/repos/dotfiles && ls -A'
+
+alias qiskit='cd ~/quantum_projects/qiskit && ls'
+alias qiskita='cd ~/quantum_projects/qiskit && ls && source .qiskit-env/bin/activate'
+
+#git aliases
+alias g='git'
+alias gs='git status'
+alias gl='git log'
+alias glo='git log --oneline'
+
+#command aliases
+alias eb='exec bash'
+alias ea='source ~/.bash/aliases'
+alias cdn='cd $(ls -td */ | head -n 1)'
+alias start='explorer.exe'
+alias github='explorer.exe https://github.com/naverdocker'
