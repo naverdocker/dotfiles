@@ -8,23 +8,27 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# all export
+if [ -f ~/.bash/exports ]; then
+    . ~/.bash/exports
+fi
 
-# set history format to include timestamps
+# shell settings
+set -o vi
+bind -m vi-insert '"kj": vi-movement-mode'
+bind 'set bell-style none'
+
+# history setting
+HISTCONTROL=ignoreboth #don't put duplicate lines or lines starting with space in the history.
 HISTTIMEFORMAT="%Y-%m-%d %T "
 
-# append to the history file, don't overwrite it
-shopt -s histappend
+shopt -s histappend #append to the history file, don't overwrite it
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+shopt -s checkwinsize #check the window size after each command and, if necessary,
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
@@ -66,11 +70,11 @@ parse_git_branch() {
 }
 
 if [ "$color_prompt" = yes ]; then
-	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;35m\]$(parse_git_branch)\[\033[00m\]\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n> ' #old 2
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;35m\]$(parse_git_branch)\[\033[00m\]\n> '
 else
-	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\n\$ '
 fi
-
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
@@ -101,23 +105,15 @@ fi
 # some more ls aliases
 alias ll='ls -AlF'
 alias la='ls -A'
-alias l='ls -CFl'
-
-# more aliases
-alias ..='cd ..'
-alias ...='cd ../..'
+alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ~/.bash/aliases ]; then
+    . ~/.bash/aliases
 fi
 
 # enable programmable completion features (you don't need to enable
