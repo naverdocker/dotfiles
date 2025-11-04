@@ -1,62 +1,41 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+#!/bin/bash
 
-# If not running interactively, don't do anything
 case $- in
     *i*) ;;
       *) return;;
 esac
 
-# all export
 if [ -f ~/.bash/exports ]; then
     . ~/.bash/exports
 fi
 
-# shell settings
 set -o vi
-bind -m vi-insert '"kj": vi-movement-mode'
 bind 'set bell-style none'
 
-# history setting
-HISTCONTROL=ignoreboth #don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth # ignore duplicate lines and lines starting with space in history
 HISTTIMEFORMAT="%Y-%m-%d %T "
-
-shopt -s histappend #append to the history file, don't overwrite it
-
+HISTIGNORE="&:cle*:celar*"
 HISTSIZE=1000
 HISTFILESIZE=2000
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize #check the window size after each command and, if necessary,
+shopt -s autocd
+shopt -s histappend # append to the history file, don't overwrite it
+shopt -s checkwinsize # check the window size after each command and, if necessary,
+shopt -s globstar # setting pattern "**" to match files and directories in pathname
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)" # make less more friendly for non-text input files, see lesspipe(1)
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then # set variable identifying the chroot you work in (used in the prompt below)
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
+case "$TERM" in # set a fancy prompt (non-color, unless we know we "want" color)
     xterm-color|*-256color) color_prompt=yes;;
 esac
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
 	color_prompt=yes
     else
 	color_prompt=
@@ -70,8 +49,12 @@ parse_git_branch() {
 }
 
 if [ "$color_prompt" = yes ]; then
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n> ' #old 2
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;35m\]$(parse_git_branch)\[\033[00m\]\n> '
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[3;38;2;150;120;200m\]\u\[\033[00m\]\[\033[3;01m\]⚡ \[\033[00m\]\[\033[3;38;2;150;120;200m\]\h \[\033[00m\]\[\033[3;02m\]\w \[\033[00m\]\[\033[3;38;2;130;120;150m\]$(parse_git_branch)\[\033[00m\]\[\033[38;2;150;120;200m\]\n> \[\033[00m\]'
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[3;38;2;150;120;200m\]\u\[\033[00m\]\[\033[2;01m\]⚛  \[\033[00m\]\[\033[3;38;2;150;120;200m\]\h \[\033[00m\]\[\033[3;02m\]\w \[\033[00m\]\[\033[3;38;2;130;120;150m\]$(parse_git_branch)\[\033[00m\]\[\033[38;2;150;120;200m\]\n> \[\033[00m\]'
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[3;38;2;150;120;200m\]\u@\[\033[00m\]\[\033[2;01m\]\[\033[00m\]\[\033[3;38;2;150;120;200m\]\h \[\033[00m\]\[\033[3;02m\]\w \[\033[00m\]\[\033[3;38;2;130;120;150m\]$(parse_git_branch)\[\033[00m\]\[\033[38;2;150;120;200m\]\n> \[\033[00m\]'
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[2;01m\]⚛️ \[\033[00m\]\[\033[3;38;2;150;120;200m\]\u\[\033[00m\]\[\033[2;01m\]➰ \[\033[00m\]\[\033[3;38;2;150;120;200m\]\h \[\033[00m\]\[\033[3;02m\]\w \[\033[00m\]\[\033[3;38;2;130;120;150m\]$(parse_git_branch)\[\033[00m\]\[\033[38;2;150;120;200m\]\n> \[\033[00m\]'
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[2;01m\]⚛️ \[\033[00m\]\[\033[3;38;2;150;120;200m\]\u\[\033[00m\]\[\033[2;01m\]➰ \[\033[00m\]\[\033[3;02m\]\w \[\033[00m\]\[\033[3;38;2;130;120;150m\]$(parse_git_branch)\[\033[00m\]\[\033[38;2;150;120;200m\]\n> \[\033[00m\]'
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[2;01m\]⚛️ \[\033[00m\]\[\033[3;38;2;150;120;200m\]\u \[\033[00m\]\[\033[3;02m\]\w \[\033[00m\]\[\033[3;38;2;130;120;150m\]$(parse_git_branch)\[\033[00m\]\[\033[38;2;150;120;200m\]\n> \[\033[00m\]'
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\n\$ '
 fi
@@ -99,14 +82,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -AlF'
-alias la='ls -A'
-alias l='ls -CF'
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -116,9 +91,6 @@ if [ -f ~/.bash/aliases ]; then
     . ~/.bash/aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -126,3 +98,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+#command
+[[ -n "$TMUX" ]] || tmux-auto
