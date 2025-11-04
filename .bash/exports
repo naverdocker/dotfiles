@@ -1,3 +1,4 @@
+#!/bin/bash
 # .bash_exports
 
 export PATH=$PATH:/home/lordnaver/.local/bin
@@ -9,7 +10,11 @@ export VISUAL=vim
 # bash exports
 export HISTFILE=~/.bash/history
 
+# config
+export XDG_CONFIG_HOME=$HOME/.config
+
 # ssh/gpg settings
-export VIMINIT='source ~/.vim/vimrc'
+export SSH_CONFIG_DIR=$HOME/.CONFIG/SSH
+#export VIMINIT='source ~/.vim/vimrc'
 export TMUX_CONF=~/.config/tmux/tmux.conf
 export GPG_TTY=$(tty)
