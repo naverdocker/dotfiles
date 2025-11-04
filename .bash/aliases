@@ -1,4 +1,6 @@
-#vim aliases
+#!/bin/bash
+
+#files
 alias bashrc='nvim ~/.bashrc'
 alias .bash='cd ~/.bash && ls -A'
 alias aliases='nvim ~/.bash/aliases'
@@ -6,29 +8,89 @@ alias exports='nvim ~/.bash/exports'
 
 alias config='nvim ~/.config'
 alias vimrc='vim ~/.vim/vimrc'
-alias inlua='nvim ~/.config/nvim/init.lua'
-alias gitconfig='nvim ~/.gitconfig'
+alias nvimconfig='cd ~/.config/nvim/ && nvim -S session.vim; cd -'
+alias gitconfig='nvim ~/.config/git/config'
+alias sshconfig='nvim ~/.config/ssh/config'
 
 alias action='nvim ~/action'
+alias action1='nvim ~/0/tracker/action1'
 
 #directory aliases
+alias xdg='cd $XDG_CONFIG_HOME && ls'
 alias code='cd /mnt/c/Users/revan/code'
-alias water='cd ~/c_projects/project_water && ls'
-alias py='cd ~/python_projects/project_py && ls'
 alias dotfiles='cd ~/repos/dotfiles && ls -A'
+alias localbin='cd ~/.local/bin && la -A'
 
-alias qiskit='cd ~/quantum_projects/qiskit && ls'
-alias qiskita='cd ~/quantum_projects/qiskit && ls && source .qiskit-env/bin/activate'
+alias nvimpath='cd ~/.config/nvim && ls'
 
-#git aliases
+alias 0='cd ~/0 && ls'
+alias 1='cd ~/1 && ls'
+
+#git
 alias g='git'
 alias gs='git status'
 alias gl='git log'
 alias glo='git log --oneline'
 
-#command aliases
+#commands
+alias v='nvim'
 alias eb='exec bash'
 alias ea='source ~/.bash/aliases'
 alias cdn='cd $(ls -td */ | head -n 1)'
+alias vimS='nvim -S session.vim'
+
 alias start='explorer.exe'
 alias github='explorer.exe https://github.com/naverdocker'
+alias stmux='tmux source-file $TMUX_CONF'
+
+alias ta='tmux-auto'
+
+#functions
+tmux-auto() {
+  if [[ -n "$TMUX" ]]; then
+    echo "Already in a tmux session"
+    return
+  fi
+
+  if tmux has-session -t default 2>/dev/null; then
+    tmux attach-session -t default
+  else
+    tmux new-session -s default
+  fi
+}
+
+alias fd='cd $(cat /tmp/session_cwd) && echo pwd -- $(pwd)'
+cd() {
+  builtin cd "$@" && echo "$(pwd)" > /tmp/session_cwd
+}
+clear() {
+  echo "$(pwd)" > /tmp/session_cwd
+  command clear
+}
+
+tsplitb() {
+    tmux send-keys "$1" C-m
+    tmux split-window -v
+    tmux send-keys "$1" C-m
+    tmux select-pane -U
+}
+
+#current
+alias ha='cd ~/python_projects/healthcare_app && ls'
+alias me='cd ~/0/me && ls'
+alias shell-diff='cd ~/projects/project_shell_diff && ls'
+alias daily='cd ~/0/daily && ls'
+alias ML='cd ~/projects/ML && ls'
+alias projects='cd ~/projects && ls'
+alias exercism='cd ~/projects/exercism && ls'
+alias water='cd ~/c_projects/project_water && ls'
+alias py='cd ~/python_projects/project_py && ls'
+alias py-activate='cd ~/python_projects/project_py && source .venv/bin/activate'
+alias qiskit='cd ~/quantum_projects/qiskit && ls'
+alias qiskitA='cd ~/quantum_projects/qiskit && ls && source .qiskit-env/bin/activate'
+alias ailab='cd ~/ai-lab && ls'
+alias ailabA='cd ~/ai-lab && ls && source .venv/bin/activate'
+
+#rolling alias
+alias a='ailabA'
+alias tstartai='tsplitb "cd ~/ai-lab && ls && source .venv/bin/activate; clear" "cd ~/ai-lab && ls && source .venv/bin/activate; clear"'
